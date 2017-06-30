@@ -20,12 +20,23 @@ def replace_u(split, index):
             result = '{}U'.format(result)
 
 
-def find_all_indexes(word, substring):
+def find_all_iii_indexes(word, substring):
     result = []
     character = substring[0]
 
     for i in range(0, len(word) - 1 - len(substring)):
         if word[i] is character and word[i + 1] is character and word[i + 2] is character:
+            result.append(i)
+
+    return result
+
+
+def find_all_uu_indexes(word, substring):
+    result = []
+    character = substring[0]
+
+    for i in range(0, len(word) - 1 - len(substring)):
+        if word[i] is character and word[i + 1] is character:
             result.append(i)
 
     return result
@@ -38,21 +49,18 @@ def replace(word, index, original, new):
 def rule3(word):
     result = []
 
-    indexes = find_all_indexes(word, 'III')
+    indexes = find_all_iii_indexes(word, 'III')
 
     for index in indexes:
-        result.append(replace(word, index, 'III', 'UU'))
+        result.append(replace(word, index, 'III', 'U'))
 
-    # split_words = word.split('III')
-    # for part, count in zip(split_words, range(0, len(split_words))):
-    #    result.append(replace_u(split_words, count))
     return result
 
 
 def rule4(word):
     result = []
 
-    indexes = find_all_indexes(word, 'UU')
+    indexes = find_all_uu_indexes(word, 'UU')
 
     for index in indexes:
         result.append(replace(word, index, 'UU', ''))
@@ -98,7 +106,7 @@ while 'MU' not in solutions.keys() and tried < 100:
 
         if is_rule2_allowed(next_word):
             derived = rule2(next_word)
-            if derived is not None and derived not in solutions.keys():
+            if derived not in solutions.keys():
                 solutions[derived] = '{}, R2'.format(solutions[next_word])
 
         if is_rule3_allowed(next_word):
